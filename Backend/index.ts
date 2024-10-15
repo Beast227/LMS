@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 
 // Import custom middleware and modules
 // import corOptions from './config/corsOptions';
-// import connectDB from './db/db';
+import connectDB from './src/db/db';
 // import verifyJWT from './middlewares/verifyJWT';
 // import credentials from './middlewares/credentials';
 
@@ -15,8 +15,8 @@ dotenv.config();
 
 const app = express();
 
-// // Connection with MongoDB
-// connectDB();
+// Connection with MongoDB
+connectDB();
 
 // // Handle options credentials check - before cors!
 // // and fetch cookies credentials requirement
