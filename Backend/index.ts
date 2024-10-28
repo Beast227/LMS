@@ -1,14 +1,16 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 // Import custom middleware and modules
-// import corOptions from './config/corsOptions';
+import corOptions from './src/config/corsOptions';
 import connectDB from './src/db/db';
-// import verifyJWT from './middlewares/verifyJWT';
-// import credentials from './middlewares/credentials';
+import verifyJWT from './src/middlewares/verifyJwt';
+import credentials from './src/middlewares/credentials';
+import adminLoginRoute from './src/routes/adminLoginRoute';
+import adminRegistration from './src/routes/adminRegistration'
 
 // Load environment variables
 dotenv.config();
@@ -18,12 +20,12 @@ const app = express();
 // Connection with MongoDB
 connectDB();
 
-// // Handle options credentials check - before cors!
-// // and fetch cookies credentials requirement
-// app.use(credentials);
+// Handle options credentials check - before cors!
+// and fetch cookies credentials requirement
+app.use(credentials);
 
-// // Cross Origin Resource Sharing
-// app.use(cors(corOptions));
+// Cross Origin Resource Sharing
+app.use(cors(corOptions));
 
 // Built-in middleware to handle URL-encoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -34,13 +36,12 @@ app.use(express.json());
 // Middleware for cookies
 app.use(cookieParser());
 
-// // Verification with JWT
-// app.use(verifyJWT);
+// Routes
+app.use('/adminLogin', adminLoginRoute); // Use imported route directly
+app.use('/adminRegister', adminRegistration)
 
-// Example route (add this or other routes)
-app.get('/', (req: Request, res: Response) => {
-  res.send('API is working');
-});
+// Verification with JWT
+app.use(verifyJWT);
 
 // Checking the connection is connected or not with the database
 mongoose.connection.once('open', () => {
