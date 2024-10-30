@@ -28,7 +28,8 @@ const teacherSchema = new Schema({
   },
   emergencyContact: {
     type: String
-  }
+  },
+  refreshToken: [String]
 });
 
 export default mongoose.model('Teacher', teacherSchema);
