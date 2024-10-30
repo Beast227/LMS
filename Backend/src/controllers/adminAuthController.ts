@@ -13,15 +13,15 @@ const handleLogin = async (req: any, res: any) => {
 
     // Find admin by either username or email
     const foundAdmin = await Admin.findOne({
-        username 
+        username
     }).exec();
 
-    if (!foundAdmin) return res.status(401).json({ message: "Username not found"}); // Unauthorized
+    if (!foundAdmin) return res.status(401).json({ message: "Username not found" }); // Unauthorized
 
     // Compare provided password with stored hashed password
     const match = await bcrypt.compare(password, foundAdmin.password);
 
-    if (!match) return res.status(401).json({ message: "Password incorrect. Try again "}); // Unauthorized
+    if (!match) return res.status(401).json({ message: "Password incorrect. Try again " }); // Unauthorized
 
     // Create Access Token
     const accessToken = jwt.sign(

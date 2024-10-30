@@ -40,7 +40,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
         })
         console.log(result)
 
-        return res.status(200).json({ message: 'Teacher is successfully stored'})
+        return res.status(200).json({ message: 'Teacher is successfully stored', password: password })
 
     } catch (error) {
         console.log(error);

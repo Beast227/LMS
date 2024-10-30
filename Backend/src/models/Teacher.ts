@@ -27,8 +27,7 @@ const teacherSchema = new Schema({
     required: true
   },
   emergencyContact: {
-    type: String,
-    required: true
+    type: String
   }
 });
 

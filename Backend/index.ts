@@ -11,6 +11,8 @@ import verifyJWT from './src/middlewares/verifyJwt';
 import credentials from './src/middlewares/credentials';
 import adminLoginRoute from './src/routes/adminLoginRoute';
 import adminRegistration from './src/routes/adminRegistration'
+import teacherResitstrationRoute from './src/routes/teacherRegistrationRoute'
+import refreshTokenRoute from './src/routes/refreshTokenRoute'
 
 // Load environment variables
 dotenv.config();
@@ -39,6 +41,8 @@ app.use(cookieParser());
 // Routes
 app.use('/adminLogin', adminLoginRoute); // Use imported route directly
 app.use('/adminRegister', adminRegistration)
+app.use('/teacherRegistration', teacherResitstrationRoute)
+app.use('/adminRefresh', refreshTokenRoute)
 
 // Verification with JWT
 app.use(verifyJWT);
