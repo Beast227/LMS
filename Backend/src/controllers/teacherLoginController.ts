@@ -21,7 +21,7 @@ const handleTeacherLogin = async (req: any, res: any) => {
     // Compare provided password with stored hashed password
     const match = await bcrypt.compare(password, foundTeacher.password);
 
-    if (!match) return res.status(401).json({ message: "Password incorrect. Try again " }); // Unauthorized
+    if (!match) return res.status(401).json({ message: "Invalid Credentials" }); // Unauthorized
 
     // Create Access Token
     const accessToken = jwt.sign(

@@ -20,7 +20,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
         .exec()
         if(!foundAdmin) {
             res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
-            return res.status(204).json({ message: 'User not found'})
+            return res.status(204).json({ message: 'Admin not found'})
         }
 
         // If teacher is already present

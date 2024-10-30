@@ -21,7 +21,7 @@ const handleLogin = async (req: any, res: any) => {
     // Compare provided password with stored hashed password
     const match = await bcrypt.compare(password, foundAdmin.password);
 
-    if (!match) return res.status(401).json({ message: "Password incorrect. Try again " }); // Unauthorized
+    if (!match) return res.status(401).json({ message: "Incorrect credentials. Kindly check your username or password" }); // Unauthorized
 
     // Create Access Token
     const accessToken = jwt.sign(
@@ -38,7 +38,7 @@ const handleLogin = async (req: any, res: any) => {
     const newRefreshToken = jwt.sign(
         { "username": foundAdmin.username },
         process.env.REFRESH_TOKEN_SECRET as string,
-        { expiresIn: '7d' } // Refresh token expiry
+        { expiresIn: '1d' } // Refresh token expiry
     );
 
     // Initialize or filter the refresh tokens to exclude the current one (if exists in cookies)
