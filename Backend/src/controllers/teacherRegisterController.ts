@@ -10,7 +10,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
         const password = generatePassword()
 
         const cookies = req.cookies
-        if (!cookies || !cookies.jwt) return res.status(204).json({ message: 'Cookies not found'})
+        if (!cookies || !cookies.jwt) return res.status(401).json({ message: 'Cookies not found'})
         const refreshToken = cookies.jwt
 
         // Is refreshToken in db?
@@ -20,7 +20,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
         .exec()
         if(!foundAdmin) {
             res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
-            return res.status(204).json({ message: 'Admin not found'})
+            return res.status(401).json({ message: 'Admin not found'})
         }
 
         // If teacher is already present
