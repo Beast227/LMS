@@ -4,16 +4,16 @@ import Teacher from '../models/Teacher';
 
 const handleTeacherLogin = async (req: any, res: any) => {
     const cookies = req.cookies;
-    const { ssn, password } = req.body;
+    const { email, password } = req.body;
 
     // Validate input
-    if (!ssn || !password) {
+    if (!email || !password) {
         return res.status(400).json({ message: "Username and password are required." });
     }
 
     // Find admin by either username or email
     const foundTeacher = await Teacher.findOne({
-        ssn
+        email
     }).exec();
 
     if (!foundTeacher) return res.status(401).json({ message: "Username not found" }); // Unauthorized
