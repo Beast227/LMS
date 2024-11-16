@@ -9,8 +9,7 @@ const adminSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
-  refreshToken: [String]
+  }
 });
 
 export default mongoose.model('Admin', adminSchema);

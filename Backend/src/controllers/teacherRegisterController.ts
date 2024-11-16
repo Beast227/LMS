@@ -2,20 +2,38 @@ import Teacher from "../models/Teacher"
 import bcrypt from "bcrypt"
 import generatePassword from "../config/generatePassword"
 import Admin from "../models/Admin"
+import jwt from "jsonwebtoken"
 
 const handleTeacherRegistration = async (req : any, res : any) => {
     try {
         
-        const { fullName , dob, ssn, gender, email } = req.body
+        const { fullName , dob, gender, email } = req.body
         const password = generatePassword()
 
         const cookies = req.cookies
         if (!cookies || !cookies.jwt) return res.status(401).json({ message: 'Cookies not found'})
         const refreshToken = cookies.jwt
 
+        // Ensure REFRESH_TOKEN_SECRET is defined
+        const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+        if (!refreshTokenSecret) {
+            console.error('REFRESH_TOKEN_SECRET is not defined');
+            return res.status(500).json({ message: 'Server configuration error' });
+        }
+
+        let _id;
+        jwt.verify(
+            refreshToken,
+            refreshTokenSecret, // Ensure this is a string
+            (err: any, decoded: any) => {
+                if (err) return res.status(403).json({ message: 'Invalid refresh token' });
+                _id = decoded.id;
+            }
+        );
+
         // Is refreshToken in db?
         const foundAdmin = await Admin.findOne({
-            refreshToken
+            _id
         })
         .exec()
         if(!foundAdmin) {
@@ -25,7 +43,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
 
         // If teacher is already present
         const foundTeacher = await Teacher.findOne({
-            $or: [{ssn},{email}]
+            email
         })
         if(foundTeacher){
             return res.status(401).json({ message: "Unauthorized request"})
@@ -36,7 +54,7 @@ const handleTeacherRegistration = async (req : any, res : any) => {
 
         // Creation of the new teacher instance
         const result = await Teacher.create({
-            fullName, dob, ssn, gender, email, password: hashedPwd
+            fullName, dob, gender, email, password: hashedPwd
         })
         console.log(result)
 

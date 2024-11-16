@@ -18,10 +18,6 @@ const teacherSchema = new Schema({
     type: Date,
     required: true
   },
-  ssn: {
-    type: String,
-    required: true
-  },
   gender: {
     type: String,
     required: true

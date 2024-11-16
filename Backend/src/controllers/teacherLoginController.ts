@@ -23,47 +23,15 @@ const handleTeacherLogin = async (req: any, res: any) => {
 
     if (!match) return res.status(401).json({ message: "Invalid Credentials" }); // Unauthorized
 
-    // Create Access Token
-    const accessToken = jwt.sign(
-        {
-            "UserInfo": {
-                "ssn": foundTeacher.ssn
-            }
-        },
-        process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: '60s' } // Access token expiry
-    );
-
     // Create a new Refresh Token
     const newRefreshToken = jwt.sign(
-        { "ssn": foundTeacher.ssn },
+        { 
+            "username": foundTeacher.email,
+            "id": foundTeacher._id
+        },
         process.env.REFRESH_TOKEN_SECRET as string,
-        { expiresIn: '7d' } // Refresh token expiry
+        { expiresIn: '1d' } // Refresh token expiry
     );
-
-    // Initialize or filter the refresh tokens to exclude the current one (if exists in cookies)
-    let newRefreshTokenArray = foundTeacher.refreshToken || [];
-
-    // If a refresh token exists in cookies, handle reuse detection and clear it
-    if (cookies?.jwt) {
-        const refreshToken = cookies.jwt;
-
-        // Remove old refresh token from the array (if it's valid and found)
-        newRefreshTokenArray = newRefreshTokenArray.filter(rt => rt !== refreshToken);
-
-        // Clear the old token from the client-side cookie
-        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' });
-    }
-
-    // Add the new refresh token to the admin's refresh token list
-    newRefreshTokenArray.push(newRefreshToken);
-
-    // Update admin's refresh token array
-    foundTeacher.refreshToken = newRefreshTokenArray;
-
-    // Save the updated admin with the new refresh token
-    const result = await foundTeacher.save();
-    console.log(result);
 
     // Set the new refresh token in the client-side cookie
     res.cookie('jwt', newRefreshToken, {
@@ -74,7 +42,7 @@ const handleTeacherLogin = async (req: any, res: any) => {
     });
 
     // Send the access token to the client
-    return res.json({ accessToken });
+    return res.status(200).json({ message: "Login Successful" })
 };
 
 export default { handleTeacherLogin };

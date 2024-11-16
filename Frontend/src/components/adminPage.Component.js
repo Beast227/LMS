@@ -124,18 +124,6 @@ const Dashboard = () => {
           </div>
 
           <div className="mb-3">
-            <label>SSN</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="SSN"
-              name="ssn"
-              value={formData.ssn}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-3">
             <label>Gender</label>
             <select
               className="form-control"
