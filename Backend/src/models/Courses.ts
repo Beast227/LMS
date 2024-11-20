@@ -22,7 +22,7 @@ const courseSchema = new Schema({
     required: true
   },
   assignment: {
-    type: assignmentSchema,
+    type: [assignmentSchema],
     required: true
   },
   descripion: {
@@ -42,7 +42,8 @@ const courseSchema = new Schema({
     required: true
   },
   courseCode: {
-    type: String
+    type: String,
+    required: true
   }
 });
 
