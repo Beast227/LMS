@@ -1,10 +1,10 @@
-import React from 'react'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import React from 'react';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-import Login from './components/login.component'
-import AdminPage from './components/adminPage.Component'
+import Login from './components/login.component';
+import AdminPage from './components/adminPage.Component';
 
 function App() {
   return (
@@ -24,18 +24,35 @@ function App() {
           </div>
         </nav>
 
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Routes>
-              <Route exact path="/" element={<Login />} />
-              <Route path="/sign-in" element={<Login />} />
-              <Route path="/dashboard" element={<AdminPage />} />
-            </Routes>
-          </div>
-        </div>
+        <Routes>
+          {/* Wrap login components in auth-wrapper */}
+          <Route
+            exact
+            path="/"
+            element={
+              <div className="auth-wrapper">
+                <div className="auth-inner">
+                  <Login />
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <div className="auth-wrapper">
+                <div className="auth-inner">
+                  <Login />
+                </div>
+              </div>
+            }
+          />
+          {/* Directly render AdminPage for /dashboard */}
+          <Route path="/dashboard" element={<AdminPage />} />
+        </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal'; // Ensure you have this installed: `npm install react-modal`
+import Modal from 'react-modal';
+import '../style/Dashboard.css'
+import Teacher from './teacher.component'
 
 Modal.setAppElement('#root'); // Set app root for accessibility
 
@@ -12,16 +14,10 @@ const Dashboard = () => {
     ssn: '',
     selectedGender: ''
   });
+  const [teachers, setTeachers] = useState([]);
 
-  // Open the modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // Open and close modal
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   // Handle form input changes
   const handleChange = (event) => {
@@ -29,34 +25,16 @@ const Dashboard = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle gender selection change
-  const handleGenderChange = (event) => {
-    setFormData({ ...formData, selectedGender: event.target.value });
-  };
-
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { fullName, dob, ssn, selectedGender, email } = formData;
-    const gender = selectedGender;
-
-    const data = {
-      fullName,
-      dob,
-      ssn,
-      gender,
-      email
-    };
-
     try {
       const response = await fetch('http://localhost:3500/teacherRegistration', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+        credentials: 'include',
       });
 
       const result = await response.json();
@@ -64,8 +42,7 @@ const Dashboard = () => {
 
       if (response.ok) {
         console.log('Signup successful!');
-        // Close the modal after successful signup
-        closeModal();
+        toggleModal(); // Close the modal on success
       } else {
         console.error('Signup failed:', response.statusText);
       }
@@ -75,77 +52,70 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h2>Welcome to the Dashboard</h2>
-      <button className="btn btn-primary" onClick={openModal}>
+    <div className={`dashboard ${isModalOpen ? 'blur-background' : ''}`}>
+      <h2>Admin Dashboard</h2>
+      <button className="btn btn-primary" onClick={toggleModal}>
         Add Teacher
       </button>
+      <Teacher teachers={teachers} setTeachers={setTeachers} ></Teacher>
 
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add Teacher Modal"
+        onRequestClose={toggleModal}
+        className="custom-modal"
+        overlayClassName="custom-overlay"
+        contentLabel="Add Teacher"
       >
-        <h2>Sign Up a Teacher</h2>
+        <div className="modal-header">
+          <h3>Add New Teacher</h3>
+          <button className="close-button" onClick={toggleModal}>
+            &times;
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label>Full Name</label>
+          <div className="form-group">
             <input
               type="text"
-              className="form-control"
-              placeholder="Full Name"
               name="fullName"
+              placeholder="Full Name"
+              className="form-control mb-2"
               value={formData.fullName}
               onChange={handleChange}
+              required
             />
-          </div>
-
-          <div className="mb-3">
-            <label>DOB</label>
             <input
               type="date"
-              className="form-control"
               name="dob"
+              className="form-control mb-2"
               value={formData.dob}
               onChange={handleChange}
+              required
             />
-          </div>
-
-          <div className="mb-3">
-            <label>Email address</label>
             <input
               type="email"
-              className="form-control"
-              placeholder="Enter email"
               name="email"
+              placeholder="Email"
+              className="form-control mb-2"
               value={formData.email}
               onChange={handleChange}
+              required
             />
-          </div>
-
-          <div className="mb-3">
-            <label>Gender</label>
             <select
-              className="form-control"
               name="selectedGender"
+              className="form-control mb-2"
               value={formData.selectedGender}
-              onChange={handleGenderChange}
+              onChange={handleChange}
+              required
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="other">Others</option>
+              <option value="other">Other</option>
             </select>
           </div>
-
-          <div className="d-grid">
-            <button type="submit" className="btn btn-primary">
-              Sign Up
-            </button>
-          </div>
-          <p className="forgot-password text-right">
-            Already registered <a href="/sign-in">sign in?</a>
-          </p>
+          <button type="submit" className="btn btn-primary btn-block">
+            Submit
+          </button>
         </form>
       </Modal>
     </div>

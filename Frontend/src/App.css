@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4; /* Light background for the login page */
+}
+
+.auth-inner {
+  padding: 30px;
+  width: 100%;
+  max-width: 400px; /* Limit width for the login form */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
