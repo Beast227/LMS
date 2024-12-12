@@ -12,7 +12,7 @@ const Dashboard = () => {
     dob: '',
     email: '',
     ssn: '',
-    selectedGender: ''
+    gender: ''
   });
   const [teachers, setTeachers] = useState([]);
 
@@ -145,9 +145,9 @@ const Dashboard = () => {
               required
             />
             <select
-              name="selectedGender"
+              name="gender"
               className="form-control mb-2"
-              value={formData.selectedGender}
+              value={formData.gender}
               onChange={handleChange}
               required
             >
