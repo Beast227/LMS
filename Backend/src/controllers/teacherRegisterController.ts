@@ -3,14 +3,12 @@ import bcrypt from "bcrypt"
 import generatePassword from "../config/generatePassword"
 import Admin from "../models/Admin"
 import jwt from "jsonwebtoken"
-import generateUniqueEmail from "../config/generateEmail"
 
 const handleTeacherRegistration = async (req : any, res : any) => {
     try {
         
-        const { fullName , dob, gender } = req.body
+        const { fullName , dob, gender, email } = req.body
         const password = generatePassword()
-        const email = generateUniqueEmail(fullName)
 
         const cookies = req.cookies
         if (!cookies || !cookies.jwt) return res.status(401).json({ message: 'Cookies not found'})

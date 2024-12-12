@@ -9,11 +9,12 @@ import corOptions from './src/config/corsOptions';
 import connectDB from './src/db/db';
 import verifyJWT from './src/middlewares/verifyJwt';
 import credentials from './src/middlewares/credentials';
-import adminLoginRoute from './src/routes/adminLoginRoute';
-import adminRegistration from './src/routes/adminRegistration'
-import teacherResitstrationRoute from './src/routes/teacherRegistrationRoute'
+import adminLoginRoute from './src/routes/admin/adminLoginRoute';
+import adminRegistration from './src/routes/admin/adminRegistration'
+import teacherResitstrationRoute from './src/routes/teacher/teacherRegistrationRoute'
 import refreshTokenRoute from './src/routes/refreshTokenRoute'
-import teacherLoginRoute from './src/routes/teacherLoginRoute'
+import teacherLoginRoute from './src/routes/teacher/teacherLoginRoute'
+import generateUniqueEmail from './src/routes/admin/generateEmailRoute'
 
 // Load environment variables
 dotenv.config();
@@ -45,6 +46,7 @@ app.use('/adminRegister', adminRegistration)
 app.use('/teacherRegistration', teacherResitstrationRoute)
 app.use('/adminRefresh', refreshTokenRoute)
 app.use('/teacherLogin', teacherLoginRoute)
+app.use('/generateEmail', generateUniqueEmail)
 
 // Verification with JWT
 app.use(verifyJWT);

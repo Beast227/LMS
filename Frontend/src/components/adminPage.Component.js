@@ -51,6 +51,37 @@ const Dashboard = () => {
     }
   };
 
+  // Generate email api call
+  const generateEmail = async () => {
+    if (!formData.fullName) {
+      alert("Please enter the full name first.");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3500/generateEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fullName: formData.fullName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate email');
+      }
+
+      const data = await response.json();
+      setFormData((prevData) => ({
+        ...prevData,
+        email: data.email, // Assuming the backend returns the email as "email"
+      }));
+    } catch (error) {
+      console.error(error);
+      alert('Error generating email. Please try again.');
+    }
+  };
+
   return (
     <div className={`dashboard ${isModalOpen ? 'blur-background' : ''}`}>
       <h2>Admin Dashboard</h2>
@@ -91,12 +122,25 @@ const Dashboard = () => {
               onChange={handleChange}
               required
             />
+            <div className="mb-2">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={generateEmail}
+                disabled={!formData.fullName}
+              >
+                Generate Email
+              </button>
+              {formData.email && (
+                <p className="mt-2">Generated Email: {formData.email}</p>
+              )}
+            </div>
             <input
-              type="email"
-              name="email"
-              placeholder="Email"
+              type="text"
+              name="ssn"
+              placeholder="SSN"
               className="form-control mb-2"
-              value={formData.email}
+              value={formData.ssn}
               onChange={handleChange}
               required
             />

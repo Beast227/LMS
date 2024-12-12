@@ -1,5 +1,5 @@
 import express from 'express';
-import teacherLoginController from '../controllers/teacherLoginController';
+import teacherLoginController from '../../controllers/teacherLoginController';
 
 const router = express.Router();
 
