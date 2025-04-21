@@ -44,6 +44,10 @@ const courseSchema = new Schema({
   courseCode: {
     type: String,
     required: true
+  },
+  enrolledUsers: {
+    type: [String], // Array of user IDs (or any other identifier for users)
+    default: [] // Default to an empty array
   }
 });
 

@@ -15,6 +15,7 @@ import teacherResitstrationRoute from './src/routes/teacher/teacherRegistrationR
 import refreshTokenRoute from './src/routes/refreshTokenRoute'
 import teacherLoginRoute from './src/routes/teacher/teacherLoginRoute'
 import generateUniqueEmail from './src/routes/admin/generateEmailRoute'
+import courseRoute from './src/routes/admin/courseRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -41,12 +42,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/adminLogin', adminLoginRoute); // Use imported route directly
+app.use('/adminLogin', adminLoginRoute);
 app.use('/adminRegister', adminRegistration)
 app.use('/teacherRegistration', teacherResitstrationRoute)
 app.use('/adminRefresh', refreshTokenRoute)
 app.use('/teacherLogin', teacherLoginRoute)
 app.use('/generateEmail', generateUniqueEmail)
+app.use('/course', courseRoute); 
 
 // Verification with JWT
 app.use(verifyJWT);
